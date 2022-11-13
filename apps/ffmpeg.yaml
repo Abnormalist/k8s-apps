@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ffmpeg
+spec:
+  type: NodePort
+  selector:
+    app: ffmpeg
+  ports:
+  - protocol: TCP
+    port: 1935
+    targetPort: 1935
+---    
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ffmpeg
+  labels:
+    name: ffmpeg  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ffmpeg
+  template:
+    metadata:
+      labels:
+        app: ffmpeg
+    spec:
+      containers:
+      - name: ffmpeg
+        image: jrottenberg/ffmpeg:4.4-ubuntu
+        imagePullPolicy: "IfNotPresent"
+        command: ["ffmpeg"]
+        args: ["-i", "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4 -f image2 -update 1 -y bunny_latest.jpg"]
+        ports:
+        - containerPort: 1935

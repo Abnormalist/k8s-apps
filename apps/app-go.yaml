@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-go-service
+  labels:
+    app: app-go
+spec:
+  type: LoadBalancer
+  selector:
+    app: app-go
+  ports:
+  - protocol: TCP
+    name: http
+    port: 80 
+    targetPort: 11130
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-go
+spec:
+  selector:
+    matchLabels:
+      app: app-go
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: app-go
+    spec:
+      containers:
+      - name: app-go
+        image: 4435561349/apptest:latest
+        ports:
+        - containerPort: 11130
+        imagePullPolicy: Always
