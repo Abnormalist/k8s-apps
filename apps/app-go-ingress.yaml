@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-go 
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  tls:
+    - hosts:
+      - devilyn.ml
+      secretName: letsencrypt
+  rules:
+    - host: devilyn.ml
+      http:
+        paths:
+        - path: /janbo
+          pathType: Prefix
+          backend:
+            service:
+              name: app-go
+              port:
+                number: 80
+
+
