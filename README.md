@@ -106,12 +106,16 @@ ingress-nginx    ingress-nginx-controller-admission   ClusterIP      10.96.202.1
 Set port forward, it necessery if you use kind cluster as i do
 I prefere to use terminal multiplexer tmux for port-forward in background so lets create new session
 ```
+```
 tmux new-session -s pf
+
 ```
 then devide terminal ctrl + b +%  and type command below
+
 ```
 kubectl -n ingress-nginx --address 0.0.0.0 port-forward svc/ingress-nginx-controller 80
 kubectl -n ingress-nginx --address 0.0.0.0 port-forward svc/ingress-nginx-controller 443
+```
 ```
 ctrl + b +d  
 
@@ -158,8 +162,7 @@ spec:
     - http01:
        ingress:
          class: nginx
-         
-         
+                  
 ```
 
 ```
@@ -180,7 +183,7 @@ Deploy ingress-nginx rule
 kubectl apply -f apps/app-go-ingress.yaml
 ```
 ### Issue Certificate
-Change domain name in certificate.yaml
+Change domain name in the certificate.yaml
 
 ```
 apiVersion: cert-manager.io/v1
@@ -211,7 +214,7 @@ letsencrypt         kubernetes.io/tls   2      72m
 letsencrypt-hjk8f   Opaque              1      85m
 ```
 
-Check that you have secure connection type your terminal and then browser
+Check that you have a secure connection type your terminal and then a browser.
 
 ```
 curl -v "https://devilyn.ml/janbo/" 
