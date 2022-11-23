@@ -1,9 +1,33 @@
-# Test task Deploy app-go with Let's Encrypt certificates
+# Test task deploy app-go with Let's Encrypt certificates
 
 ## Requirements
 * VPC on cloud provider (aws,gce...etc)
-* Docker,kind installed
+* Docker installed https://docs.docker.com/engine/install/debian/
+* Kind installed   https://kind.sigs.k8s.io/docs/user/quick-start/
+* Terraform install (optional) https://developer.hashicorp.com/terraform/downloads
+* Terraform YC cfgs https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs                                
 
+VPC and "kind" cluster can be deployed manualy but it is not a good way. Me presonaly prefer to use IAC tool Trerraform, you cat find it in repo.
+# Terraform YC (yandex_cloud)
+Create accoutn first if you are haven't got one yet. 
+```
+cd terraform/
+```
+first make necessery changes in configuration only if you are use YC and define you personal variables
+
+```
+mv terraform.tfvars.example terraform.tfvars
+
+token_val = "your yc token"
+cloud_id_val = "yc_cloud_id"
+folder_id_val = "yc_folder_id"
+zone_val = "yc_cloud_zone"  
+```
+```
+terraform init
+terraform plan
+terraform apply
+```
 # Install
 #### clone repo 
 ```
@@ -80,7 +104,7 @@ ingress-nginx    ingress-nginx-controller             LoadBalancer   10.96.188.1
 ingress-nginx    ingress-nginx-controller-admission   ClusterIP      10.96.202.145   <none>           443/TCP                      20s
 
 Set port forward, it necessery if you use kind cluster as i do
-I use multiplexor tmux for port-forward in background so lets create new session
+I prefere to use terminal multiplexer tmux for port-forward in background so lets create new session
 ```
 tmux new-session -s pf
 ```
